@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>CAED Demo</title>
+</head>
+<body>
+
+<h1>Client-Side Audio Emotion Detector</h1>
+
+<button id="initBtn">Initialize</button>
+<button id="startBtn" disabled>Start Detection</button>
+
+<div id="status">Status: Not initialized</div>
+<pre id="output"></pre>
+
+<!-- TensorFlow.js -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+
+<!-- Your app -->
+<script type="module" src="./src/main.js"></script>
+
+
+</body>
+</html>
