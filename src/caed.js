@@ -20,7 +20,7 @@ export async function initialize() {
     console.log("CAED: Initializing...");
 
     // Load ML model
-    model = await tf.loadGraphModel("/model/model.json");
+    model = await tf.loadGraphModel("./model/model.json");
     console.log("Model loaded successfully");
 
     // Mic access
@@ -104,3 +104,4 @@ export function stopDetection() {
 export function onResult(cb) {
   resultCallback = cb;
 }
+
