@@ -17,31 +17,40 @@ const EMOTIONS = ["angry", "calm", "happy", "sad"];
 // ----------------------------------------------------------
 export async function initialize() {
   try {
-    console.log("CAED: Initializing...");
+    console.log("Initializing CAED...");
 
-    // Load ML model
-    model = await tf.loadGraphModel("./model/model.json");
-    console.log("Model loaded successfully");
+    const basePath = window.location.pathname.endsWith("/")
+      ? window.location.pathname
+      : window.location.pathname + "/";
 
-    // Mic access
+    model = await tf.loadGraphModel(basePath + "model/model.json");
+    console.log("Model loaded");
+
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    audioContext = new AudioContext();
+
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioContext.state === "suspended") {
+      await audioContext.resume();
+    }
 
     const source = audioContext.createMediaStreamSource(stream);
 
     analyser = audioContext.createAnalyser();
     analyser.fftSize = 2048;
-
     source.connect(analyser);
 
     freqBuffer = new Float32Array(analyser.frequencyBinCount);
 
+    console.log("Microphone ready");
     return true;
+
   } catch (err) {
     console.error("Initialization failed:", err);
+    alert("Initialization failed: " + err.message);
     return false;
   }
 }
+
 
 // ----------------------------------------------------------
 // FEATURE NORMALIZATION (matches Python StandardScaler)
@@ -104,4 +113,5 @@ export function stopDetection() {
 export function onResult(cb) {
   resultCallback = cb;
 }
+
 
